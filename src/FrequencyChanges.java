@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class FrequencyChanges {
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int result = getFrequency(input);
+        Scanner in = new Scanner(System.in);
 
-        System.out.println("The frequency is " + result);
+        System.out.println("The frequency is " +
+                getFrequency(in));
     }
 
     public static int getFrequency(Scanner in) {
