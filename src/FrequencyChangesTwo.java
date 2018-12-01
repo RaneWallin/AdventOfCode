@@ -17,15 +17,11 @@ public class FrequencyChangesTwo {
 
 
         while(!isDupe(curFreq, frequencyList)) {
-            //System.out.println("curFreq is " + curFreq);
-            //System.out.println("frequencyList is " + frequencyList);
             frequencyList.add(curFreq);
             curFreq += inputs.get(count);
             if (count >= inputs.size() - 1) count = 0;
             else
                 count++;
-
-            //System.out.println("curFreq is " + curFreq);
         }
 
         return curFreq;
@@ -52,13 +48,10 @@ public class FrequencyChangesTwo {
 
     private static boolean isDupe(int freq, List<Integer> frequencies) {
         for (int in: frequencies) {
-            //System.out.println("in is "+in+" and freq is "+freq);
             if (freq == in) {
                 return true;
             }
         }
         return false;
     }
-
-
 }
