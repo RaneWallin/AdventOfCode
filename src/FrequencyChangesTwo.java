@@ -47,11 +47,6 @@ public class FrequencyChangesTwo {
     }
 
     private static boolean isDupe(int freq, List<Integer> frequencies) {
-        for (int in: frequencies) {
-            if (freq == in) {
-                return true;
-            }
-        }
-        return false;
+        return frequencies.contains(freq);
     }
 }
