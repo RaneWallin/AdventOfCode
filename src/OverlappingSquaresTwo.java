@@ -2,6 +2,15 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /*
+Rane Wallin
+
+Challenge: https://adventofcode.com/2018/day/3
+Amidst the chaos, you notice that exactly one claim doesn't overlap by even a single square inch of fabric with any
+other claim. If you can somehow draw attention to it, maybe the Elves will be able to make Santa's suit after all!
+
+For example, in the claims above, only claim 3 is intact after all claims are made.
+
+What is the ID of the only claim that doesn't overlap?
  * Sample input:
  * #1 @ 1,3: 4x4
  * #2 @ 3,1: 4x4
@@ -27,7 +36,7 @@ public class OverlappingSquaresTwo extends AdventOfCode {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        List<String> input = getInput(in);
+        List<String> input = getInput(in); // input is found in ../inputs/OverlappingSquares.txt
         Map<String, ArrayList<Integer>> allCoordinates = getCoordinates(input);
 
         System.out.println("The best claim is "+getBestClaim(allCoordinates));
@@ -54,6 +63,9 @@ public class OverlappingSquaresTwo extends AdventOfCode {
             }
 
             // Each square inch is given a coordinate on a grid
+            // each coordinate is a key with the value being
+            // an ArrayList containing the claim IDs that include
+            // that coordinate
             for(int i = firstRow; i < firstRow+numRow; i++) {
                 for (int j = firstCol; j < firstCol+numCol; j++) {
                     String coord = i+", "+j;
@@ -68,9 +80,12 @@ public class OverlappingSquaresTwo extends AdventOfCode {
         return allCoordinates;
     }
 
+    // Find the claim without any overlaps
     private static int getBestClaim(Map<String, ArrayList<Integer>> allCoordinates) {
         Set<String> allKeys = allCoordinates.keySet();
 
+        // search each coordinate. If the coordinate has more than two claims, remove
+        // that ID from the AllClaims set
         for(String coord: allKeys) {
             if (allCoordinates.get(coord).size() > 1) {
                 for(int id: allCoordinates.get(coord)) {
@@ -79,6 +94,7 @@ public class OverlappingSquaresTwo extends AdventOfCode {
             }
         }
 
+        // Only one claim should be left. Cast to array and return to first member.
         return (int)allClaims.toArray()[0];
     }
 }
