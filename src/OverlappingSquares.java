@@ -18,62 +18,61 @@
  *
  */
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+    import java.util.*;
+    import java.util.regex.Matcher;
+    import java.util.regex.Pattern;
 
-public class OverlappingSquares extends AdventOfCode {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        List<String> input = getInput(in);
-        List<String> allCoordinates = getCoordinates(input);
+    public class OverlappingSquares extends AdventOfCode {
+        public static void main(String[] args) {
+            Scanner in = new Scanner(System.in);
+            List<String> input = getInput(in);
+            Map<String, Integer> allCoordinates = getCoordinates(input);
 
-        System.out.println("There are "+getOverlappingNum(allCoordinates)+" overlapping tiles");
+            System.out.println("There are "+getOverlappingNum(allCoordinates)+" overlapping tiles");
 
-    }
+        }
 
-    // find all covered coordinates for each
-    private static List<String> getCoordinates(List<String> in) {
-        int count = 0;
-        int firstRow = 0, firstCol = 0, numRow = 0, numCol = 0;
-        List<String> allCoordinates = new ArrayList();
+        // find all covered coordinates for each
+        private static Map<String, Integer> getCoordinates(List<String> in) {
+            int count = 0;
+            int firstRow = 0, firstCol = 0, numRow = 0, numCol = 0;
+            Map<String, Integer> allCoordinates = new HashMap<>();
 
-        for(String tile: in) {
-            Pattern pattern =
-                    Pattern.compile("#(?<id>\\d+) @ (?<firstCol>\\d+),(?<firstRow>\\d+): (?<numRows>\\d+)x(?<numCols>\\d+)");
+            for(String tile: in) {
+                Pattern pattern =
+                        Pattern.compile("#(?<id>\\d+) @ (?<firstCol>\\d+),(?<firstRow>\\d+): (?<numCols>\\d+)x(?<numRows>\\d+)");
 
-            Matcher matcher = pattern.matcher(tile);
-            while (matcher.find()) {
-                firstRow = Integer.parseInt(matcher.group("firstRow"));
-                firstCol = Integer.parseInt(matcher.group("firstCol"));
-                numRow = Integer.parseInt(matcher.group("numRows"));
-                numCol = Integer.parseInt(matcher.group("numCols"));
-            }
+                Matcher matcher = pattern.matcher(tile);
+                while (matcher.find()) {
+                    firstRow = Integer.parseInt(matcher.group("firstRow"));
+                    firstCol = Integer.parseInt(matcher.group("firstCol"));
+                    numRow = Integer.parseInt(matcher.group("numRows"));
+                    numCol = Integer.parseInt(matcher.group("numCols"));
+                }
 
-            for(int i = firstRow; i < firstRow+numRow; i++) {
-                for (int j = firstCol; j < firstCol+numCol; j++) {
-                    String coord = i+", "+j;
-                    allCoordinates.add(coord);
+                // Each square inch is given a coordinate on a grid
+                for(int i = firstRow; i < firstRow+numRow; i++) {
+                    for (int j = firstCol; j < firstCol+numCol; j++) {
+                        String coord = i+", "+j;
+                        if (allCoordinates.containsKey(coord)) {
+                            allCoordinates.put(coord, allCoordinates.get(coord) + 1);
+                        } else {
+                            allCoordinates.put(coord, 1);
+                        }
+                    }
                 }
             }
-        }
-            return allCoordinates;
-    }
-
-
-    // Add all coordinates to a set
-    // get difference between all coordinates and
-    // all unique coordinates
-    private static int getOverlappingNum(List<String> in) {
-        Set<String> uniqueCoords = new TreeSet<>();
-
-        for(int i = 0; i < in.size(); i++) {
-            uniqueCoords.add(in.get(i));
+                return allCoordinates;
         }
 
-        System.out.println("Size of in "+in.size());
-        System.out.println("Size of out "+uniqueCoords.size());
-        return in.size() - uniqueCoords.size();
+        private static int getOverlappingNum(Map<String, Integer> in) {
+            final int[] dupes = {0};
+
+            in.forEach((k, v) -> {
+                if (in.get(k) > 1) dupes[0]++;
+            });
+
+            return dupes[0];
+        }
     }
-}
 
